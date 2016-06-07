@@ -1,7 +1,6 @@
 package proxy;
 
-
-
+import lib.ReadJson;
 
 public class ReadJsonTest {
 
@@ -33,10 +32,9 @@ public class ReadJsonTest {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-    	/*
+    	
     	ReadJson rj = new ReadJson();
-    	Pelicula p = (Pelicula) rj.convertirJsonToObject("",(Object) new Pelicula());
-    	System.out.println(p.getTitulo());*/
+    	
     	
     }
 }

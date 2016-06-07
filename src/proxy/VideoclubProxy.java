@@ -1,6 +1,7 @@
 package proxy;
 
 import businessLogic.Pelicula;
+import lib.ReadJson;
 
 import java.io.IOException;
 
