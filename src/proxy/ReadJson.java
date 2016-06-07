@@ -9,35 +9,42 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class ReadJson {
-
-	//metodo que va a leer el json y convertilo en objeto segun el objeto que venga como parametro
-	public Object convertirJsonToObject (String json,Object objectoParametro){
-		
+	
+	public JSONObject validarJson (String json){
 		//instancio el parser
 		JSONParser parser = new JSONParser();
-		//obtengo la clase que tengo que usar segun la que viene por parametro
-		Class<? extends Object> clase = objectoParametro.getClass();
 		
-		//declaro el objeto que voy a devolver
-		Object objetoParametroReturn;
-		
-		try {
-			
-			//le instancio un objeto a la clase
-			objetoParametroReturn = clase.newInstance();
-		
-			Object obj;
-			//si no viene nada como parametro json, uso este archivito por defecto
+		Object obj = false;
+		try{
 			if (json.isEmpty()){
-				 obj = parser.parse(new FileReader(
-	                    "/C:/Users/mcasal/Desktop/test.html"));
-			//si viene algo, lo utilizo como json
+				 obj = parser.parse(new FileReader("/C:/Users/mcasal/Desktop/test.html"));
+				//si viene algo, lo utilizo como json
 			}else {
 				obj = parser.parse(json); 
 			}
-			 JSONObject jsonObject = (JSONObject) obj;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		 JSONObject jsonObject = (JSONObject) obj;
+		 return jsonObject;
+	}
+
+	//metodo que va a leer el json y convertilo en objeto segun el objeto que venga como parametro
+	public Object convertirJsonToGenericObject (JSONObject jsonObject,Object objectoParametro){
+		
+			//obtengo la clase que tengo que usar segun la que viene por parametro
+			Class<? extends Object> clase = objectoParametro.getClass();
+			
+			//declaro el objeto que voy a devolver
+			Object objetoParametroReturn;
+			try{
+			//le instancio un objeto a la clase
+			objetoParametroReturn = clase.newInstance();
+			
+
             
-			Iterator it = ((HashMap) obj).entrySet().iterator();
+			Iterator it = ((HashMap) jsonObject).entrySet().iterator();
 			//recorro el json con un iterator
             while (it.hasNext()) {
             	//si hay un siguiente cargo en el objeto par
@@ -57,7 +64,7 @@ public class ReadJson {
                 it.remove(); 
             }
  
-            /*
+            
             //asi funcionaba el ejemplo
             //String title = (String) jsonObject.get("title");
             //String body = (String) jsonObject.get("body");
@@ -66,12 +73,11 @@ public class ReadJson {
             //System.out.println("Name: " + title);
             //System.out.println("Author: " + body);
             
-            System.out.println("\nCompany List:");
-            Iterator<String> iterator = companyList.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-            */
+            //System.out.println("\nCompany List:");
+            //Iterator<String> iterator = companyList.iterator();
+            //while (iterator.hasNext()) {
+            //    System.out.println(iterator.next());
+            //}
             
             //devuelvo el objeto automatico
             return objetoParametroReturn;
@@ -84,3 +90,4 @@ public class ReadJson {
 		
 	}
 }
+

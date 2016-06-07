@@ -3,6 +3,9 @@ package proxy;
 import businessLogic.Pelicula;
 
 import java.io.IOException;
+
+import org.json.simple.JSONObject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -57,14 +60,19 @@ public class VideoclubProxy {
 		try {
 			//obtengo el json desde la url
 			//response = this.run(automaticUrl);
-			//lector de json
+			//clase propia lector de json
 			ReadJson rj = new ReadJson();
-			//busco el objeto a traves del json con convertirJsonToObject
-			//como parametro mando el response y el objeto pedido
-			//como casteo mando el objeto pedido
-			p = (Pelicula) rj.convertirJsonToObject(response, (Object) new Pelicula());
-			//System.out.println(response);
 			
+			//primero valido el json y obtengo el objeto
+			JSONObject jsonObject = rj.validarJson(response);
+			
+			//si jsonObject viene con algo quiere decir que se pudo usar el json, puede convertirlo al objeto generico
+			if (jsonObject != null){
+				//busco el objeto a traves del json con convertirJsonToObject
+				//como parametro mando el response y el objeto pedido
+				//como casteo mando el objeto pedido
+				p = (Pelicula) rj.convertirJsonToGenericObject(jsonObject, (Object) new Pelicula());
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
